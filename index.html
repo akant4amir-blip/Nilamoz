@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نيل آموز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: black;
+            color: yellow;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .lessons-container {
+            padding: 30px 20px;
+        }
+        
+        .lesson-item {
+            background: #f8f9fa;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 15px;
+            border-right: 5px solid #007bff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .lesson-item:hover {
+            background: #007bff;
+            color: white;
+            transform: translateX(-10px);
+        }
+        
+        .chapters-container {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .chapter-item {
+            background: #e9ecef;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-item:hover {
+            background: #28a745;
+            color: white;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: black;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+        }
+        
+        .nav-btn {
+            background: yellow;
+            color: black;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #ffd700;
+            transform: translateY(-3px);
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>نيل آموز</h1>
+            <p>آموزش آنلاین کلاس سوم</p>
+        </div>
+        
+        <div class="lessons-container" id="lessonsList">
+            <div class="lesson-item" onclick="showChapters('ریاضی')">ریاضی</div>
+            <div class="lesson-item" onclick="showChapters('علوم')">علوم</div>
+            <div class="lesson-item" onclick="showChapters('مطالعات')">مطالعات اجتماعی</div>
+            <div class="lesson-item" onclick="showChapters('هدیه')">هدیه های آسمان</div>
+            <div class="lesson-item" onclick="showChapters('فارسی')">فارسی</div>
+            <div class="lesson-item" onclick="showChapters('نگارش')">نگارش</div>
+            <div class="lesson-item" onclick="showChapters('قرآن')">قرآن</div>
+        </div>
+        
+        <div class="chapters-container" id="chaptersContainer">
+            <!-- فصل‌ها اینجا نمایش داده می‌شوند -->
+        </div>
+    </div>
+    
+    <div class="bottom-nav">
+        <button class="nav-btn" onclick="goToLogin()">ورود</button>
+        <button class="nav-btn" onclick="goToHome()">صفحه اصلی</button>
+        <button class="nav-btn" onclick="showInfo()">اطلاعات</button>
+    </div>
+
+    <script>
+        // اطلاعات دروس و فصل‌ها - دقیقاً طبق اعداد گفته شده
+        const lessonsData = {
+            'ریاضی': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸'],
+            'علوم': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲'],
+            'مطالعات': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷'],
+            'هدیه': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲', 'فصل ۱۳', 'فصل ۱۴', 'فصل ۱۵', 'فصل ۱۶', 'فصل ۱۷', 'فصل ۱۸', 'فصل ۱۹', 'فصل ۲۰'],
+            'فارسی': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷'],
+            'نگارش': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲', 'فصل ۱۳', 'فصل ۱۴', 'فصل ۱۵', 'فصل ۱۶', 'فصل ۱۷'],
+            'قرآن': ['فصل ۱', 'فصل ۲', 'فصل ۳']
+        };
+        
+        let currentLesson = '';
+        
+        function showChapters(lessonName) {
+            currentLesson = lessonName;
+            const lessonsList = document.getElementById('lessonsList');
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            
+            // پنهان کردن لیست دروس
+            lessonsList.style.display = 'none';
+            
+            // نمایش فصل‌ها
+            chaptersContainer.innerHTML = `
+                <button class="nav-btn back-btn" onclick="showLessons()">← بازگشت</button>
+                <h3 style="text-align: center; margin-bottom: 20px; color: #333;">${lessonName}</h3>
+            `;
+            
+            lessonsData[lessonName].forEach(chapter => {
+                const chapterElement = document.createElement('div');
+                chapterElement.className = 'chapter-item';
+                chapterElement.textContent = chapter;
+                chapterElement.onclick = () => openPDF(lessonName, chapter);
+                chaptersContainer.appendChild(chapterElement);
+            });
+            
+            chaptersContainer.style.display = 'block';
+        }
+        
+        function showLessons() {
+            const lessonsList = document.getElementById('lessonsList');
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            
+            lessonsList.style.display = 'block';
+            chaptersContainer.style.display = 'none';
+            currentLesson = '';
+        }
+        
+        function openPDF(lesson, chapter) {
+            // اینجا می‌تونی آدرس PDF رو قرار بدی
+            alert(`PDF مربوط به ${lesson} - ${chapter} باز می‌شود`);
+            // مثال: window.open('pdf/' + lesson + '/' + chapter + '.pdf', '_blank');
+        }
+        
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+        
+        function showInfo() {
+            alert('نيل آموز - آموزش آنلاین کلاس سوم\nنسخه ۱.۰');
+        }
+    </script>
+</body>
+</html>

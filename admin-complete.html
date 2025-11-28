@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت - نيل آموز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: black;
+            color: yellow;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .admin-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .menu-btn {
+            background: black;
+            color: yellow;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        
+        .content-area {
+            padding: 30px;
+            min-height: 500px;
+        }
+        
+        /* استایل‌های مشابه صفحه اصلی */
+        .lessons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .lesson-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-right: 5px solid #007bff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .lesson-item:hover {
+            background: #007bff;
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .chapters-container {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .chapter-item {
+            background: #e9ecef;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-item:hover {
+            background: #28a745;
+            color: white;
+        }
+        
+        .upload-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px dashed #007bff;
+        }
+        
+        .upload-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="header">
+            <h1>پنل مدیریت نيل آموز</h1>
+            <p>مدیریت محتوای آموزشی</p>
+        </div>
+        
+        <div class="admin-menu">
+            <button class="menu-btn" onclick="showContentManagement()">مدیریت محتوا</button>
+            <button class="menu-btn" onclick="showUserManagement()">مدیریت کاربران</button>
+            <button class="menu-btn" onclick="goToHome()">صفحه اصلی</button>
+        </div>
+        
+        <div class="content-area" id="contentArea">
+            <!-- محتوای مدیریت اینجا نمایش داده میشه -->
+        </div>
+    </div>
+
+    <script>
+        // اطلاعات دروس و فصل‌ها - دقیقاً مثل صفحه اصلی
+        const lessonsData = {
+            'ریاضی': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸'],
+            'علوم': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲'],
+            'مطالعات': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷'],
+            'هدیه': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲', 'فصل ۱۳', 'فصل ۱۴', 'فصل ۱۵', 'فصل ۱۶', 'فصل ۱۷', 'فصل ۱۸', 'فصل ۱۹', 'فصل ۲۰'],
+            'فارسی': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷'],
+            'نگارش': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲', 'فصل ۱۳', 'فصل ۱۴', 'فصل ۱۵', 'فصل ۱۶', 'فصل ۱۷'],
+            'قرآن': ['فصل ۱', 'فصل ۲', 'فصل ۳']
+        };
+        
+        let currentLesson = '';
+        let currentChapter = '';
+        
+        // نمایش مدیریت محتوا به صورت پیش‌فرض
+        showContentManagement();
+        
+        function showContentManagement() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">مدیریت محتوای دروس</h2>
+                <div class="lessons-container" id="adminLessonsList">
+                    <div class="lesson-item" onclick="showAdminChapters('ریاضی')">ریاضی</div>
+                    <div class="lesson-item" onclick="showAdminChapters('علوم')">علوم</div>
+                    <div class="lesson-item" onclick="showAdminChapters('مطالعات')">مطالعات اجتماعی</div>
+                    <div class="lesson-item" onclick="showAdminChapters('هدیه')">هدیه های آسمان</div>
+                    <div class="lesson-item" onclick="showAdminChapters('فارسی')">فارسی</div>
+                    <div class="lesson-item" onclick="showAdminChapters('نگارش')">نگارش</div>
+                    <div class="lesson-item" onclick="showAdminChapters('قرآن')">قرآن</div>
+                </div>
+                <div class="chapters-container" id="adminChaptersContainer">
+                    <!-- فصل‌ها و آپلود اینجا نمایش داده می‌شوند -->
+                </div>
+            `;
+        }
+        
+        function showAdminChapters(lessonName) {
+            currentLesson = lessonName;
+            const lessonsList = document.getElementById('adminLessonsList');
+            const chaptersContainer = document.getElementById('adminChaptersContainer');
+            
+            // پنهان کردن لیست دروس
+            lessonsList.style.display = 'none';
+            
+            // نمایش فصل‌ها و بخش آپلود
+            chaptersContainer.innerHTML = `
+                <button class="menu-btn back-btn" onclick="showAdminLessons()">← بازگشت به لیست دروس</button>
+                <h3 style="text-align: center; margin-bottom: 20px; color: #333;">${lessonName}</h3>
+                <div class="upload-section">
+                    <h4>آپلود فایل PDF برای ${lessonName}</h4>
+                    <input type="file" id="pdfUpload" class="file-input" accept=".pdf">
+                    <button class="upload-btn" onclick="uploadPDF()">آپلود فایل PDF</button>
+                </div>
+                <div style="margin-top: 30px;">
+                    <h4>فصل‌های ${lessonName}:</h4>
+            `;
+            
+            lessonsData[lessonName].forEach(chapter => {
+                const chapterElement = document.createElement('div');
+                chapterElement.className = 'chapter-item';
+                chapterElement.textContent = chapter;
+                chapterElement.onclick = () => selectChapter(lessonName, chapter);
+                chaptersContainer.appendChild(chapterElement);
+            });
+            
+            chaptersContainer.style.display = 'block';
+        }
+        
+        function showAdminLessons() {
+            const lessonsList = document.getElementById('adminLessonsList');
+            const chaptersContainer = document.getElementById('adminChaptersContainer');
+            
+            lessonsList.style.display = 'grid';
+            chaptersContainer.style.display = 'none';
+            currentLesson = '';
+            currentChapter = '';
+        }
+        
+        function selectChapter(lesson, chapter) {
+            currentChapter = chapter;
+            alert(`فصل "${chapter}" از درس "${lesson}" انتخاب شد\nمی‌توانید فایل PDF مربوطه را آپلود کنید`);
+        }
+        
+        function uploadPDF() {
+            const fileInput = document.getElementById('pdfUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('لطفاً یک فایل PDF انتخاب کنید');
+                return;
+            }
+            
+            if (file.type !== 'application/pdf') {
+                alert('لطفاً فقط فایل PDF آپلود کنید');
+                return;
+            }
+            
+            // اینجا می‌تونی فایل رو به سرور آپلود کنی
+            alert(`فایل "${file.name}" برای ${currentLesson} با موفقیت آپلود شد`);
+            
+            // ریست کردن فایل اینپوت
+            fileInput.value = '';
+        }
+        
+        function showUserManagement() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = `
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">مدیریت کاربران</h2>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <p>لیست کاربران و مدیریت دسترسی‌ها</p>
+                    <p>این بخش برای مدیریت دانش‌آموزان و معلمان</p>
+                </div>
+            `;
+        }
+        
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
