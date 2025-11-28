@@ -197,9 +197,9 @@
         }
         
         function openPDF(lesson, chapter) {
-            // اینجا می‌تونی آدرس PDF رو قرار بدی
-            alert(`PDF مربوط به ${lesson} - ${chapter} باز می‌شود`);
-            // مثال: window.open('pdf/' + lesson + '/' + chapter + '.pdf', '_blank');
+            const chapterNum = chapter.replace('فصل ', '');
+            const pdfFile = `f${chapterNum}-Biamoz.com.pdf`;
+            window.open(`pdf/${pdfFile}`, '_blank');
         }
         
         function goToLogin() {
