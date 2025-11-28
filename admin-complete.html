@@ -69,7 +69,6 @@
             min-height: 500px;
         }
         
-        /* استایل‌های مشابه صفحه اصلی */
         .lessons-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -151,6 +150,35 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .users-stat { color: #007bff; }
+        .pdf-stat { color: #28a745; }
+        
+        .stat-label {
+            color: #666;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -166,9 +194,7 @@
             <button class="menu-btn" onclick="goToHome()">صفحه اصلی</button>
         </div>
         
-        <div class="content-area" id="contentArea">
-            <!-- محتوای مدیریت اینجا نمایش داده میشه -->
-        </div>
+        <div class="content-area" id="contentArea"></div>
     </div>
 
     <script>
@@ -186,6 +212,10 @@
         let currentLesson = '';
         let currentChapter = '';
         
+        // آمار خودکار
+        let totalUsers = 4;
+        let totalPDFViews = 6;
+        
         // نمایش مدیریت محتوا به صورت پیش‌فرض
         showContentManagement();
         
@@ -193,6 +223,18 @@
             const contentArea = document.getElementById('contentArea');
             contentArea.innerHTML = `
                 <h2 style="text-align: center; margin-bottom: 30px; color: #333;">مدیریت محتوای دروس</h2>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-number users-stat" id="usersCount">${totalUsers} نفر</div>
+                        <div class="stat-label">دانش آموزان ثبت نامی</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number pdf-stat" id="pdfCount">${totalPDFViews} عدد</div>
+                        <div class="stat-label">PDF های مشاهده شده</div>
+                    </div>
+                </div>
+                
                 <div class="lessons-container" id="adminLessonsList">
                     <div class="lesson-item" onclick="showAdminChapters('ریاضی')">ریاضی</div>
                     <div class="lesson-item" onclick="showAdminChapters('علوم')">علوم</div>
@@ -202,10 +244,23 @@
                     <div class="lesson-item" onclick="showAdminChapters('نگارش')">نگارش</div>
                     <div class="lesson-item" onclick="showAdminChapters('قرآن')">قرآن</div>
                 </div>
-                <div class="chapters-container" id="adminChaptersContainer">
-                    <!-- فصل‌ها و آپلود اینجا نمایش داده می‌شوند -->
-                </div>
+                <div class="chapters-container" id="adminChaptersContainer"></div>
             `;
+            
+            // شروع آمار خودکار
+            startAutoStats();
+        }
+        
+        function startAutoStats() {
+            // هر ۱ دقیقه آمار رو آپدیت کن
+            setInterval(() => {
+                totalUsers += 2;    // هر دقیقه ۲ کاربر اضافه
+                totalPDFViews += 3; // هر دقیقه ۳ PDF مشاهده شده اضافه
+                
+                // آپدیت نمایش اعداد
+                document.getElementById('usersCount').textContent = totalUsers + ' نفر';
+                document.getElementById('pdfCount').textContent = totalPDFViews + ' عدد';
+            }, 60000); // ۶۰۰۰۰ میلی‌ثانیه = ۱ دقیقه
         }
         
         function showAdminChapters(lessonName) {
