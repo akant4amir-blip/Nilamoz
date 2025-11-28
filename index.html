@@ -118,6 +118,16 @@
             margin-bottom: 10px;
             width: 100%;
         }
+
+        .pdf-message {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -159,6 +169,98 @@
             'نگارش': ['فصل ۱', 'فصل ۲', 'فصل ۳', 'فصل ۴', 'فصل ۵', 'فصل ۶', 'فصل ۷', 'فصل ۸', 'فصل ۹', 'فصل ۱۰', 'فصل ۱۱', 'فصل ۱۲', 'فصل ۱۳', 'فصل ۱۴', 'فصل ۱۵', 'فصل ۱۶', 'فصل ۱۷'],
             'قرآن': ['فصل ۱', 'فصل ۲', 'فصل ۳']
         };
+
+        // نگاشت فصل‌ها به فایل‌های PDF
+        const pdfMapping = {
+            'ریاضی': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf',
+                '8': 'f8_Blamoz.com.pdf'
+            },
+            'علوم': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf',
+                '8': 'f8_Blamoz.com.pdf',
+                '9': 'f1_Blamoz.com.pdf',
+                '10': 'f2_Blamoz.com.pdf',
+                '11': 'f3_Blamoz.com.pdf',
+                '12': 'f4_Blamoz.com.pdf'
+            },
+            'مطالعات': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf'
+            },
+            'هدیه': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf',
+                '8': 'f8_Blamoz.com.pdf',
+                '9': 'f1_Blamoz.com.pdf',
+                '10': 'f2_Blamoz.com.pdf',
+                '11': 'f3_Blamoz.com.pdf',
+                '12': 'f4_Blamoz.com.pdf',
+                '13': 'f5_Blamoz.com.pdf',
+                '14': 'f6_Blamoz.com.pdf',
+                '15': 'f7_Blamoz.com.pdf',
+                '16': 'f8_Blamoz.com.pdf',
+                '17': 'f1_Blamoz.com.pdf',
+                '18': 'f2_Blamoz.com.pdf',
+                '19': 'f3_Blamoz.com.pdf',
+                '20': 'f4_Blamoz.com.pdf'
+            },
+            'فارسی': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf'
+            },
+            'نگارش': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf',
+                '4': 'f4_Blamoz.com.pdf',
+                '5': 'f5_Blamoz.com.pdf',
+                '6': 'f6_Blamoz.com.pdf',
+                '7': 'f7_Blamoz.com.pdf',
+                '8': 'f8_Blamoz.com.pdf',
+                '9': 'f1_Blamoz.com.pdf',
+                '10': 'f2_Blamoz.com.pdf',
+                '11': 'f3_Blamoz.com.pdf',
+                '12': 'f4_Blamoz.com.pdf',
+                '13': 'f5_Blamoz.com.pdf',
+                '14': 'f6_Blamoz.com.pdf',
+                '15': 'f7_Blamoz.com.pdf',
+                '16': 'f8_Blamoz.com.pdf',
+                '17': 'f1_Blamoz.com.pdf'
+            },
+            'قرآن': {
+                '1': 'f1_Blamoz.com.pdf',
+                '2': 'f2_Blamoz.com.pdf',
+                '3': 'f3_Blamoz.com.pdf'
+            }
+        };
         
         let currentLesson = '';
         
@@ -174,6 +276,7 @@
             chaptersContainer.innerHTML = `
                 <button class="nav-btn back-btn" onclick="showLessons()">← بازگشت</button>
                 <h3 style="text-align: center; margin-bottom: 20px; color: #333;">${lessonName}</h3>
+                <div class="pdf-message">روی هر فصل کلیک کنید تا PDF آن باز شود</div>
             `;
             
             lessonsData[lessonName].forEach(chapter => {
@@ -198,12 +301,29 @@
         
         function openPDF(lesson, chapter) {
             const chapterNum = chapter.replace('فصل ', '');
-            const pdfFile = `f${chapterNum}-Biamoz.com.pdf`;
-            window.open(`pdf/${pdfFile}`, '_blank');
+            
+            // پیدا کردن فایل PDF مربوطه
+            let pdfFile = '';
+            if (pdfMapping[lesson] && pdfMapping[lesson][chapterNum]) {
+                pdfFile = pdfMapping[lesson][chapterNum];
+            } else {
+                // اگر نگاشت خاصی پیدا نشد، از فرمت پیش‌فرض استفاده کن
+                pdfFile = `f${chapterNum}_Blamoz.com.pdf`;
+            }
+            
+            console.log(`باز کردن فایل: ${pdfFile} برای ${lesson} - ${chapter}`);
+            
+            // باز کردن PDF در تب جدید
+            const pdfWindow = window.open(pdfFile, '_blank');
+            
+            // اگر فایل باز نشد، پیام خطا نمایش بده
+            if (!pdfWindow || pdfWindow.closed || typeof pdfWindow.closed == 'undefined') {
+                alert('خطا در باز کردن فایل PDF! ممکن است فایل وجود نداشته باشد.');
+            }
         }
         
         function goToLogin() {
-            window.location.href = 'login.html';
+            alert('صفحه ورود - در حال توسعه...');
         }
         
         function goToHome() {
@@ -211,7 +331,7 @@
         }
         
         function showInfo() {
-            alert('نيل آموز - آموزش آنلاین کلاس سوم\nنسخه ۱.۰');
+            alert('نيل آموز - آموزش آنلاین کلاس سوم\nنسخه ۱.۰\nتمام حقوق محفوظ است');
         }
     </script>
 </body>
