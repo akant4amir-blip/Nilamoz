@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود - نيل آموز</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .header {
+            background: black;
+            color: yellow;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-form {
+            padding: 30px 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: black;
+            color: yellow;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        
+        .bottom-nav {
+            background: #f8f9fa;
+            padding: 20px;
+            border-top: 2px solid #dee2e6;
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background: black;
+            color: yellow;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .nav-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h1>نيل آموز</h1>
+            <p>ورود به پنل کاربری</p>
+        </div>
+        
+        <div class="login-form">
+            <div class="form-group">
+                <label for="username">نام کاربری:</label>
+                <input type="text" id="username" placeholder="نام کاربری خود را وارد کنید">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">رمز عبور:</label>
+                <input type="password" id="password" placeholder="رمز عبور خود را وارد کنید">
+            </div>
+            
+            <button class="login-btn" onclick="login()">ورود به سیستم</button>
+        </div>
+        
+        <div class="bottom-nav">
+            <button class="nav-btn" onclick="showContact()">تماس با ما</button>
+            <button class="nav-btn" onclick="showAbout()">درباره ما</button>
+            <button class="nav-btn" onclick="goToHome()">صفحه اصلی</button>
+        </div>
+    </div>
+    
+    <!-- مودال تماس با ما -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">تماس با ما</h2>
+            <p style="text-align: center; font-size: 18px; margin-bottom: 20px;">
+                ایمیل: <strong>nilamooz@gmail.com</strong>
+            </p>
+            <button class="close-btn" onclick="closeModal('contactModal')">بستن</button>
+        </div>
+    </div>
+    
+    <!-- مودال درباره ما -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">درباره ما</h2>
+            <div style="line-height: 1.8; text-align: justify;">
+                <p><strong>به نام خدا</strong></p>
+                <p>نیل آموز پلتفرمی برای استفاده دانش آموزان و معلمان کلاس سوم ساخته شده است.</p>
+                <p>در سال 1403 راه اندازی شد از امکانات نیل آموز:</p>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>تست آنلاین</li>
+                    <li>گام به گام</li>
+                </ul>
+                <p style="margin-top: 15px;">و اینکه با کمک و روحیه شما طی سال های آینده با پیشرفت بسیار قوی سال های تحصیلی جدید اضافه خواهد شد.</p>
+            </div>
+            <button class="close-btn" onclick="closeModal('aboutModal')">بستن</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === '' || password === '') {
+                alert('لطفاً نام کاربری و رمز عبور را وارد کنید');
+                return;
+            }
+            
+            // اینجا می‌تونی لاگین رو چک کنی
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        function showContact() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+        
+        function showAbout() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+        
+        // بستن مودال با کلیک خارج از آن
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // ورود با دکمه انتر
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
