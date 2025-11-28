@@ -176,7 +176,6 @@
         <div class="bottom-nav">
             <button class="nav-btn" onclick="showContact()">تماس با ما</button>
             <button class="nav-btn" onclick="showAbout()">درباره ما</button>
-            <button class="nav-btn" onclick="goToHome()">صفحه اصلی</button>
         </div>
     </div>
     
@@ -219,10 +218,12 @@
                 return;
             }
             
-            // اینجا می‌تونی لاگین رو چک کنی
-            if (username === 'admin' && password === 'admin') {
-                window.location.href = 'admin.html';
-            } else {
+            // بررسی مدیر
+            if (username === 'amirhossein' && password === '13') {
+                window.location.href = 'admin-complete.html';
+            } 
+            // بررسی دانش آموز
+            else {
                 window.location.href = 'index.html';
             }
         }
@@ -238,10 +239,13 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
-        
-        function goToHome() {
-            window.location.href = 'index.html';
-        }
+
+        // ورود با دکمه انتر
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
         
         // بستن مودال با کلیک خارج از آن
         window.onclick = function(event) {
@@ -249,13 +253,6 @@
                 event.target.style.display = 'none';
             }
         }
-        
-        // ورود با دکمه انتر
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
-        });
     </script>
 </body>
 </html>
